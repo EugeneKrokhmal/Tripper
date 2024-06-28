@@ -3,7 +3,6 @@ import AddTrip from './AddTrip';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-
 const Trips = () => {
     const [trips, setTrips] = useState([]);
     const [error, setError] = useState(null);
@@ -15,18 +14,23 @@ const Trips = () => {
 
     const fetchTrips = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/trips`);
+            const token = localStorage.getItem('token'); // Fetch token from localStorage
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/trips`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             setTrips(response.data);
-            setLoading(false); // Update loading state
+            setLoading(false);
         } catch (error) {
             console.error('Error fetching trips:', error);
             setError(error.message || 'Failed to fetch trips');
-            setLoading(false); // Update loading state
+            setLoading(false);
         }
     };
 
     if (loading) {
-        return <p>Loading...</p>; // Show loading state
+        return <p>Loading...</p>; // Show loading state while fetching data
     }
 
     return (
@@ -44,21 +48,14 @@ const Trips = () => {
                             <h2 className="card-title">{trip.destination}</h2>
                             <p className="text-base-content text-opacity-40 mb-3">{new Date(trip.startDate).toLocaleDateString()}</p>
                             <div className="avatar-group -space-x-3 rtl:space-x-reverse">
-                                <div className="avatar">
-                                    <div className="w-6">
-                                        <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                                {/* Assuming you want to display avatars for participants */}
+                                {trip.participants.slice(0, 3).map((participant, index) => (
+                                    <div className="avatar" key={index}>
+                                        <div className="w-6">
+                                            <img src={participant.avatarUrl} alt={`Avatar ${index}`} />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="avatar">
-                                    <div className="w-6">
-                                        <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-                                    </div>
-                                </div>
-                                <div className="avatar">
-                                    <div className="w-6">
-                                        <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-                                    </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
                         <div className="flex-0">

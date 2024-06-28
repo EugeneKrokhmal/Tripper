@@ -7,8 +7,8 @@ const tripSchema = new mongoose.Schema({
     destination: { type: String, required: true },
     participants: { type: [String], default: [] },
     expenses: [{
-        name: { type: String },
-        amount: { type: Number }
+        name: { type: Object, required: true },
+        amount: { type: Object, required: true }
     }],
     tripImage: { type: String },
     coordinates: {

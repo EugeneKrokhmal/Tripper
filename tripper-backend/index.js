@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const tripRoutes = require('./routes/tripRoutes');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -14,6 +15,10 @@ const MONGO_URI = process.env.MONGO_URI;
 app.use(bodyParser.json());
 app.use(cors());
 
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api', tripRoutes);
+
 // Connect to MongoDB Atlas
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
@@ -22,8 +27,11 @@ db.once('open', () => {
     console.log('Connected to MongoDB');
 });
 
-// Routes
-app.use('/api', tripRoutes);
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
 
 // Start server
 app.listen(PORT, () => {
