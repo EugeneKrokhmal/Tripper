@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
+import WelcomeMessage from './WelcomeMessage';
 
 const Register = ({ setIsAuthenticated }) => {
     const [email, setEmail] = useState('');
@@ -31,24 +32,27 @@ const Register = ({ setIsAuthenticated }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            {error && <div className="alert alert-error">{error}</div>}
-            <div className="form-control">
-                <label>Email:</label>
-                <input className="input input-bordered input-m mb-3" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            </div>
-            <div className="form-control">
-                <label>Password:</label>
-                <input className="input input-bordered input-m mb-3" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            </div>
-            <div className="form-control">
-                <label>Confirm Password:</label>
-                <input className="input input-bordered input-m mb-3" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-            </div>
-            <button type="submit" className="btn btn-primary" disabled={loading}>
-                {loading ? 'Registering...' : 'Register'}
-            </button>
-        </form>
+        <>
+            <WelcomeMessage />
+            <form onSubmit={handleSubmit}>
+                {error && <div className="alert alert-error">{error}</div>}
+                <div className="form-control">
+                    <label>Email:</label>
+                    <input className="input input-bordered input-m mb-3" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                </div>
+                <div className="form-control">
+                    <label>Password:</label>
+                    <input className="input input-bordered input-m mb-3" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                </div>
+                <div className="form-control">
+                    <label>Confirm Password:</label>
+                    <input className="input input-bordered input-m mb-3" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                </div>
+                <button type="submit" className="btn btn-primary" disabled={loading}>
+                    {loading ? 'Registering...' : 'Register'}
+                </button>
+            </form>
+        </>
     );
 };
 

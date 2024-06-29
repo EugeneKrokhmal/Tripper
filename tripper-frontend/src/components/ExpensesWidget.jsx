@@ -57,7 +57,7 @@ const ExpensesWidget = ({ expenses, tripId, onUpdateExpenses }) => {
                 {/* Placeholder for user's paid amount */}
                 <div className="stat">
                     <div className="stat-title">You paid</div>
-                    <div className="stat-value">$400</div>
+                    <div className="stat-value">$0</div>
                     <div className="stat-actions">
                         <button className="btn btn-sm">Yours</button>
                     </div>

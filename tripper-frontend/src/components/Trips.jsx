@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AddTrip from './AddTrip';
 import axios from 'axios';
+import Loader from './Loader';
 import { Link } from 'react-router-dom';
 
 const Trips = () => {
@@ -30,7 +31,7 @@ const Trips = () => {
     };
 
     if (loading) {
-        return <p>Loading...</p>; // Show loading state while fetching data
+        return <Loader />
     }
 
     return (
@@ -41,6 +42,7 @@ const Trips = () => {
                 <AddTrip />
             </div>
             <div className="grid grid-cols-1 gap-3 xl:grid-cols-1 rounded-box">
+                <h3 className="text-3xl font-bold">Your trips</h3>
                 {error && <p>{error}</p>}
                 {trips.map(trip => (
                     <Link to={`/trips/${trip._id}`} className="flex-row items-start space-x-4 card-body bg-base-200 rounded-box" key={trip._id}>

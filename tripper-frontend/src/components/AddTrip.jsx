@@ -48,8 +48,8 @@ const AddTrip = () => {
 
     return (
         <>
-            <div className="flex justify-center">
-                <button className="btn btn-xs btn-lg btn-primary  my-6" onClick={openModal}>Let's Go!</button>
+            <div className="flex">
+                <button className="w-full btn btn-primary my-6 btn-outline btn-accent" onClick={openModal}>Let's Go!</button>
             </div>
             <dialog id="addTripModal" className="modal">
                 <div className="modal-box">

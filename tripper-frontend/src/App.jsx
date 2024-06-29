@@ -6,6 +6,8 @@ import TripDetail from './components/TripDetail';
 import Trips from './components/Trips';
 import Register from './components/Register';
 import Footer from './components/Footer';
+import Loader from './components/Loader';
+
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -42,13 +44,12 @@ const App = () => {
   };
 
   if (loading) {
-    return <p>Loading...</p>; // Consider using a loading spinner instead
+    return <Loader />; // Consider using a loading spinner instead
   }
 
   return (
     <Router>
-      <div className="App p-4" data-theme="dark">
-        {/* Navbar */}
+      <div className="App p-4" data-theme="winter">
         <div className="navbar bg-base-300 rounded-box mb-6">
           <div className="flex-1">
             <a href="/" className="btn btn-ghost text-xl">Tripper</a>
@@ -59,7 +60,6 @@ const App = () => {
               {!isAuthenticated ? (
                 <>
                   <li><a href="/login">Login</a></li>
-                  <li><a href="/register">Register</a></li>
                 </>
               ) : (
                 <li>
@@ -93,8 +93,8 @@ const App = () => {
             )}
           </Routes>
         </main>
+        <Footer />
       </div>
-      <Footer />
     </Router>
   );
 };

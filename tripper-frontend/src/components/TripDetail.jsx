@@ -5,6 +5,7 @@ import EditTrip from './EditTrip'; // Import the EditTrip component
 import ExpensesWidget from './ExpensesWidget';
 import ParticipantsWidget from './ParticipantsWidget';
 import TasksWidget from './TasksWidget';
+import Loader from './Loader';
 
 const TripDetail = () => {
     const { id } = useParams(); // Extract trip ID from URL params
@@ -64,7 +65,7 @@ const TripDetail = () => {
 
     // Render loading state while fetching trip details
     if (loading) {
-        return <p>Loading...</p>;
+        return <Loader />;
     }
 
     // Render error message if there's an error fetching trip details
