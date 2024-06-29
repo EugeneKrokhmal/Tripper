@@ -40,13 +40,13 @@ const Login = ({ setIsAuthenticated }) => {
                             {error && <div className="alert alert-error">{error}</div>}
                             <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                                 <div>
-                                    <label for="email" className="block mb-2 text-sm font-medium">Email</label>
-                                    <input className="input input-bordered input-m w-full" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                                    <label className="block mb-2 text-sm font-medium">Email</label>
+                                    <input className="input  input-m w-full" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                                 </div>
 
                                 <div>
-                                    <label for="password" className="block mb-2 text-sm font-medium">Password</label>
-                                    <input className="input input-bordered input-m w-full" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                                    <label className="block mb-2 text-sm font-medium">Password</label>
+                                    <input className="input  input-m w-full" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                                 </div>
 
                                 <div className="flex items-center justify-between">
@@ -55,7 +55,7 @@ const Login = ({ setIsAuthenticated }) => {
                                             <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="" />
                                         </div>
                                         <div className="ml-3 text-sm">
-                                            <label for="remember" className="text-gray-500 dark:text-gray-300">Remember me</label>
+                                            <label  className="text-gray-500 dark:text-gray-300">Remember me</label>
                                         </div>
                                     </div>
                                     <a href="/forgotpassword" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>

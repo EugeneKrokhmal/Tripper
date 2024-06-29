@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import EditTrip from './EditTrip'; // Import the EditTrip component
+import { useParams, useNavigate } from 'react-router-dom';
+import EditTrip from './EditTrip';
 import ExpensesWidget from './ExpensesWidget';
 import ParticipantsWidget from './ParticipantsWidget';
 import TasksWidget from './TasksWidget';
 import Loader from './Loader';
+import Modal from './Modal'; // Import the Modal component
 
 const TripDetail = () => {
     const { id } = useParams(); // Extract trip ID from URL params
+    const navigate = useNavigate(); // Use useNavigate for navigation after deletion
     const [trip, setTrip] = useState(null); // State to hold trip details
     const [loading, setLoading] = useState(true); // Loading state
     const [error, setError] = useState(null); // Error state
     const [isEditModalOpen, setIsEditModalOpen] = useState(false); // State to manage edit modal
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // State to manage confirm modal
 
     // Function to fetch trip details based on ID
     useEffect(() => {
@@ -43,10 +46,15 @@ const TripDetail = () => {
     }, [id]);
 
     // Function to delete a trip by ID
-    const deleteTrip = async (id) => {
+    const deleteTrip = async () => {
         try {
-            await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/trips/${id}`);
-            // Handle successful deletion (e.g., navigate to another page or show success message)
+            const token = localStorage.getItem('token'); // Retrieve JWT token from local storage
+            await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/trips/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Include token in request headers
+                }
+            });
+            navigate('/'); // Navigate to home page or another appropriate page after deletion
         } catch (error) {
             console.error('Error deleting trip:', error);
             setError(error.message || 'Failed to delete trip'); // Set error state on deletion error
@@ -61,6 +69,22 @@ const TripDetail = () => {
     // Function to close the edit modal
     const closeEditModal = () => {
         setIsEditModalOpen(false);
+    };
+
+    // Function to open the confirm modal for deletion
+    const openConfirmModal = () => {
+        setIsConfirmModalOpen(true);
+    };
+
+    // Function to close the confirm modal
+    const closeConfirmModal = () => {
+        setIsConfirmModalOpen(false);
+    };
+
+    // Function to handle the confirmation of deletion
+    const handleConfirmDelete = () => {
+        closeConfirmModal();
+        deleteTrip();
     };
 
     // Render loading state while fetching trip details
@@ -122,7 +146,7 @@ const TripDetail = () => {
             <div className="flex gap-1 my-6">
                 <button className="btn btn-sm btn-outline btn-accent" onClick={openEditModal}>Edit Trip</button>
                 <button className="btn btn-sm btn-outline btn-accent">Share</button>
-                <button className="btn btn-sm btn-outline btn-secondary" onClick={() => deleteTrip(trip._id)}>Delete Trip</button>
+                <button className="btn btn-sm btn-outline btn-secondary" onClick={openConfirmModal}>Delete Trip</button>
             </div>
 
             {/* Edit Trip Modal */}
@@ -131,6 +155,17 @@ const TripDetail = () => {
                 isOpen={isEditModalOpen}
                 closeModal={closeEditModal}
             />
+
+            {/* Confirm Delete Modal */}
+            <Modal open={isConfirmModalOpen} onClose={closeConfirmModal}>
+                <div>
+                    <p className="mb-6">Are you sure you want to delete this trip?</p>
+                    <div className="flex justify-end gap-4">
+                        <button className="btn btn-secondary" onClick={closeConfirmModal}>Cancel</button>
+                        <button className="btn btn-danger" onClick={handleConfirmDelete}>Delete</button>
+                    </div>
+                </div>
+            </Modal>
         </>
     );
 };

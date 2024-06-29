@@ -17,7 +17,9 @@ const AddTrip = () => {
                 startDate,
                 endDate,
                 destination,
-                description
+                description,
+                owner: 'userId',
+                participants: ['userId']
             });
             console.log('Trip saved:', response.data);
             // Optionally, reset form fields after successful submission
@@ -51,37 +53,40 @@ const AddTrip = () => {
             <div className="flex">
                 <button className="w-full btn btn-primary my-6 btn-outline btn-accent" onClick={openModal}>Let's Go!</button>
             </div>
-            <dialog id="addTripModal" className="modal">
-                <div className="modal-box">
-                    <strong className="text-2xl font-bold">Add Trip</strong>
+            <dialog id="addTripModal" className="modal bg-base-200 bg-opacity-60">
+                <div className="modal-box bg-base-300 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                    <div className="flex justify-between w-full"></div>
                     <form onSubmit={handleSubmit}>
                         <div className="form-control">
                             <label className="label">Trip Name:</label>
-                            <input type="text" className="input input-bordered input-lg" value={name} onChange={(e) => setName(e.target.value)} required />
+                            <input type="text" className="input input-m w-full" value={name} onChange={(e) => setName(e.target.value)} required />
+                        </div>
+
+                        <div className="flex gap-3">
+                            <div className="form-control w-full">
+                                <label className="label">Start Date:</label>
+                                <input type="date" className="input input-m w-full" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
+                            </div>
+                            <div className="form-control w-full">
+                                <label className="label">End Date:</label>
+                                <input type="date" className="input input-m w-full" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
+                            </div>
                         </div>
                         <div className="form-control">
-                            <label className="label">Start Date:</label>
-                            <input type="date" className="input input-bordered input-lg" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
+                            <label className="label">Where?:</label>
+                            <input type="text" className="input input-m w-full" value={destination} onChange={(e) => setDestination(e.target.value)} required />
                         </div>
                         <div className="form-control">
-                            <label className="label">End Date:</label>
-                            <input type="date" className="input input-bordered input-lg" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
+                            <label className="label">Few words:</label>
+                            <textarea className="textarea textarea-m" value={description} onChange={(e) => setDescription(e.target.value)} required />
                         </div>
-                        <div className="form-control">
-                            <label className="label">Destination:</label>
-                            <input type="text" className="input input-bordered input-lg" value={destination} onChange={(e) => setDestination(e.target.value)} required />
-                        </div>
-                        <div className="form-control">
-                            <label className="label">Description:</label>
-                            <textarea className="textarea textarea-bordered textarea-lg" value={description} onChange={(e) => setDescription(e.target.value)} required />
-                        </div>
-                        <div className="modal-action">
-                            <button type="submit" className="btn btn-primary">Yalla!</button>
-                            <button type="button" className="btn" onClick={closeModal}>Close</button>
+                        <div className="modal-action flex gap-1">
+                            <button type="submit" className="btn btn-m btn-primary">Yalla!</button>
+                            <button type="button" className="btn btn-m btn-secondary" onClick={closeModal}>Cancel</button>
                         </div>
                     </form>
-                </div>
-            </dialog>
+                </div >
+            </dialog >
         </>
     );
 };

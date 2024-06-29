@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import AddTrip from './AddTrip';
 import axios from 'axios';
 import Loader from './Loader';
 import { Link } from 'react-router-dom';
-
 const Trips = () => {
+    // const { userId } = useContext(AuthContext); // Ensure AuthContext is imported correctly
     const [trips, setTrips] = useState([]);
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true); // Add loading state
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchTrips();
@@ -15,7 +15,7 @@ const Trips = () => {
 
     const fetchTrips = async () => {
         try {
-            const token = localStorage.getItem('token'); // Fetch token from localStorage
+            const token = localStorage.getItem('token');
             const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/trips`, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -50,14 +50,14 @@ const Trips = () => {
                             <h2 className="card-title">{trip.destination}</h2>
                             <p className="text-base-content text-opacity-40 mb-3">{new Date(trip.startDate).toLocaleDateString()}</p>
                             <div className="avatar-group -space-x-3 rtl:space-x-reverse">
-                                {/* Assuming you want to display avatars for participants */}
-                                {trip.participants.slice(0, 3).map((participant, index) => (
+                                {/* Display avatars for participants */}
+                                {trip.participants ? trip.participants.map((participant, index) => (
                                     <div className="avatar" key={index}>
                                         <div className="w-6">
                                             <img src={participant.avatarUrl} alt={`Avatar ${index}`} />
                                         </div>
                                     </div>
-                                ))}
+                                )) : ''}
                             </div>
                         </div>
                         <div className="flex-0">

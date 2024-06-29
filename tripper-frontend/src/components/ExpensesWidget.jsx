@@ -64,7 +64,7 @@ const ExpensesWidget = ({ expenses, tripId, onUpdateExpenses }) => {
                 </div>
             </div>
 
-            <Modal show={showModal} onClose={() => setShowModal(false)}>
+            <Modal open={showModal} onClose={() => setShowModal(false)}>
                 <div className="mt-4 w-full mb-9">
                     <h2 className="text-xl mb-3">Add New</h2>
                     <input
@@ -72,14 +72,14 @@ const ExpensesWidget = ({ expenses, tripId, onUpdateExpenses }) => {
                         placeholder="What did you pay for?"
                         value={newExpense.name}
                         onChange={(e) => setNewExpense({ ...newExpense, name: e.target.value })}
-                        className="input input-bordered mb-2 w-full"
+                        className="input  mb-2 w-full"
                     />                    
                     <input
                         type="number"
                         placeholder="Amount"
                         value={newExpense.amount}
                         onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
-                        className="input input-bordered mb-3 w-full"
+                        className="input  mb-3 w-full"
                     />
                     <button className="btn btn-sm btn-outline btn-accent" onClick={handleAddExpense}>Add Expense</button>
                     {error && <p className="text-red-500 my-3">{error}</p>}

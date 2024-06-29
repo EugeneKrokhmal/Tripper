@@ -1,17 +1,28 @@
 import React from 'react';
 
-const Modal = ({ show, onClose, children }) => {
-    if (!show) return null;
-
+const Modal = ({ open, onClose, children }) => {
     return (
-        <div className="fixed inset-0 bg-base-300 flex items-center justify-center z-50">
-            <div className="rounded-lg p-6 w-full h-screen">
+        <dialog className="modal bg-base-200 bg-opacity-60" open={open}>
+            <div className="modal-box">
                 <div className="flex justify-end mb-6">
-                    <button className="btn btn-sm btn-outline" onClick={onClose}>Close</button>
+                    <button className="btn btn-sm btn-circle btn-outline" onClick={onClose}>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
                 <div>{children}</div>
             </div>
-        </div>
+        </dialog>
     );
 };
 
