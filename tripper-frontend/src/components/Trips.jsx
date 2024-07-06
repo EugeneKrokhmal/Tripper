@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
-import AddTrip from './AddTrip';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Loader from './Loader';
 import { Link } from 'react-router-dom';
+import Slider from "react-slick";
+import AddTrip from './AddTrip';
+
 const Trips = () => {
-    // const { userId } = useContext(AuthContext); // Ensure AuthContext is imported correctly
     const [trips, setTrips] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -30,41 +31,52 @@ const Trips = () => {
         }
     };
 
+    const sliderSettings = {
+        className: "center",
+        dots: false,
+        arrows: false,
+        infinite: true,
+        slidesToShow: 1,
+        speed: 500
+    };
+
     if (loading) {
         return <Loader />
     }
 
     return (
         <>
-            <div className='my-6'>
-                <h1 className="text-5xl font-bold">Where this time?</h1>
-                <p className="pt-6 pb-3">Tripper simplifies expense splitting and task management for seamless travel experiences, tailored for companies and groups.</p>
-                <AddTrip />
-            </div>
-            <div className="grid grid-cols-1 gap-3 xl:grid-cols-1 rounded-box">
-                <h3 className="text-3xl font-bold">Your trips</h3>
-                {error && <p>{error}</p>}
-                {trips.map(trip => (
-                    <Link to={`/trips/${trip._id}`} className="flex-row items-start space-x-4 card-body bg-base-200 rounded-box" key={trip._id}>
-                        <div className="flex-1">
-                            <h2 className="card-title">{trip.destination}</h2>
-                            <p className="text-base-content text-opacity-40 mb-3">{new Date(trip.startDate).toLocaleDateString()}</p>
-                            <div className="avatar-group -space-x-3 rtl:space-x-reverse">
-                                {/* Display avatars for participants */}
-                                {trip.participants ? trip.participants.map((participant, index) => (
-                                    <div className="avatar" key={index}>
-                                        <div className="w-6">
-                                            <img src={participant.avatarUrl} alt={`Avatar ${index}`} />
+            <AddTrip />
+            {error && <p>{error}</p>}
+            <div className="bg-base-200">
+                <div className="px-8 flex-col text-left">
+                    <h2 className="text-3xl font-bold">My trips</h2>
+                </div>
+            </div>            
+            <div className="slider-container mb-8">
+                <Slider {...sliderSettings}>
+                    {trips.map(trip => (
+                        <div key={trip._id}>
+                            <Link to={`/trips/${trip._id}`} className="flex-row items-start space-x-4 card-body bg-base-200">
+                                <div className="card bg-base-100 w-96 shadow-xl">
+                                    <figure>
+                                        <img
+                                            src="https://hips.hearstapps.com/hmg-prod/images/alpe-di-siusi-sunrise-with-sassolungo-or-langkofel-royalty-free-image-1623254127.jpg"
+                                            alt="" />
+                                    </figure>
+                                    <div className="card-body">
+                                        <h2 className="card-title">{trip.name}</h2>
+                                        <p>{trip.destination}</p>
+                                        <small>{new Date(trip.startDate).toLocaleDateString()}</small>
+                                        <div className="card-actions  mt-4">
+                                            <button className="btn btn-sm btn-outline btn-accent" onClick={() => { }}>More</button>
                                         </div>
                                     </div>
-                                )) : ''}
-                            </div>
+                                </div>
+                            </Link>
                         </div>
-                        <div className="flex-0">
-                            <button className="btn btn-sm btn-outline btn-accent" onClick={() => { }}>More</button>
-                        </div>
-                    </Link>
-                ))}
+                    ))}
+                </Slider>
             </div>
         </>
     );

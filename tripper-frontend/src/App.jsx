@@ -8,6 +8,8 @@ import Register from './components/Register';
 import Footer from './components/Footer';
 import Loader from './components/Loader';
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -49,34 +51,50 @@ const App = () => {
 
   return (
     <Router>
-      <div className="App p-4" data-theme="winter">
-        <div className="navbar bg-base-300 rounded-box mb-6">
-          <div className="flex-1">
-            <a href="/" className="btn btn-ghost text-xl">Tripper</a>
-          </div>
-          <div className="flex-none">
-            <ul className="menu menu-horizontal px-1">
-              <li><a href="/">My Trips</a></li>
-              {!isAuthenticated ? (
-                <>
-                  <li><a href="/login">Login</a></li>
-                </>
-              ) : (
-                <li>
-                  <details>
-                    <summary>Account</summary>
-                    <ul className="bg-base-100 rounded-t-none p-2">
-                      <li><button onClick={handleLogout}>Logout</button></li>
-                    </ul>
-                  </details>
-                </li>
-              )}
-            </ul>
+      <div className="App" data-theme="winter">
+        <div className="m-4">
+          <div className="navbar bg-base-300 rounded-box">
+            <div className="flex-1">
+              <a href="/" className="btn btn-ghost text-xl">Tripper</a>
+            </div>
+            <div className="flex-0">
+              <ul className="menu menu-horizontal px-1 items-center">
+                {!isAuthenticated ? (
+                  <>
+                    <li><a href="/login">Login</a></li>
+                  </>
+                ) : (
+                  <>
+                    <div className="dropdown dropdown-end">
+                      <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                        <div className="w-10 rounded-full">
+                          <img
+                            alt="Tailwind CSS Navbar component"
+                            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                        </div>
+                      </div>
+                      <ul
+                        tabIndex={0}
+                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                        <li>
+                          <a className="justify-between">
+                            Profile
+                            <span className="badge">New</span>
+                          </a>
+                        </li>
+                        <li><a>Settings</a></li>
+                        <li><button onClick={handleLogout}>Logout</button></li>
+                      </ul>
+                    </div>
+                  </>
+                )}
+              </ul>
+            </div>
           </div>
         </div>
 
         {/* Main content */}
-        <main>
+        <main className="pb-8 mb-8">
           <Routes>
             {!isAuthenticated ? (
               <>
@@ -87,7 +105,7 @@ const App = () => {
             ) : (
               <>
                 <Route path="/trips/:id" element={<TripDetail />} />
-                <Route path="/" element={<Trips />} />
+                <Route path="/trips" element={<Trips />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </>
             )}

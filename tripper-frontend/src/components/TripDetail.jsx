@@ -104,29 +104,34 @@ const TripDetail = () => {
 
     // Render trip details and related components once loaded
     return (
-        <>
+        <div className="p-4">
             {/* Hero section displaying trip details */}
-            <div className="hero mb-6 rounded-box">
+            <div className="hero mb-4 rounded-box">
                 <div className="hero-overlay bg-opacity-60 rounded-box"></div>
-                <div className="hero-content text-neutral-content text-center">
+                <div className="hero-content text-neutral-content text-center p-8">
                     <div className="max-w-md">
-                        <h1 className="mb-6 mt-3 text-5xl font-bold">{trip.destination}</h1>
+                        <h1 className="mb-4 mt-2 text-5xl font-bold">{trip.destination}</h1>
                         <span>{new Date(trip.startDate).toLocaleDateString()} - {new Date(trip.endDate).toLocaleDateString()}</span>
                         <p className="my-5">{trip.description}</p>
+                        <div className="countdown font-mono text-2xl">
+                            <span style={{ "--value": 10 }}></span>:
+                            <span style={{ "--value": 24 }}></span>:
+                            <span style={{ "--value": 20 }}></span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </div >
 
             {/* Collapse sections for participants, expenses, and tasks */}
-            <div className="collapse bg-base-200 mb-3">
+            <div className="collapse bg-base-200 mb-4" >
                 <input type="radio" name="my-accordion-1" defaultChecked />
                 <div className="collapse-title text-xl font-medium">Participants</div>
                 <div className="collapse-content">
                     <ParticipantsWidget participants={trip.participants} />
                 </div>
-            </div>
+            </div >
 
-            <div className="collapse bg-base-200 mb-3">
+            <div className="collapse bg-base-200 mb-4">
                 <input type="radio" name="my-accordion-2" defaultChecked />
                 <div className="collapse-title text-xl font-medium">Expenses</div>
                 <div className="collapse-content">
@@ -134,7 +139,7 @@ const TripDetail = () => {
                 </div>
             </div>
 
-            <div className="collapse bg-base-200 mb-3">
+            <div className="collapse bg-base-200 mb-4">
                 <input type="radio" name="my-accordion-3" defaultChecked />
                 <div className="collapse-title text-xl font-medium">Tasks</div>
                 <div className="collapse-content">
@@ -166,7 +171,7 @@ const TripDetail = () => {
                     </div>
                 </div>
             </Modal>
-        </>
+        </div>
     );
 };
 

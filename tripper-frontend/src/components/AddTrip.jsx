@@ -50,27 +50,29 @@ const AddTrip = () => {
 
     return (
         <>
-            <div className="flex">
-                <button className="w-full btn btn-primary my-6 btn-outline btn-accent" onClick={openModal}>Let's Go!</button>
+            <div className="hero bg-base-200">
+                <div className="p-8 flex-col text-left">
+                    <h2 className="text-3xl font-bold">Where this time?</h2>
+                    <p className="py-4">
+                        Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
+                        quasi. In deleniti eaque aut repudiandae et a id nisi.
+                    </p>
+                    <button className="btn btn-primary btn-outline btn-accent" onClick={openModal}>Create trip</button>
+                </div>
             </div>
+
             <dialog id="addTripModal" className="modal bg-base-200 bg-opacity-60">
                 <div className="modal-box bg-base-300 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                     <div className="flex justify-between w-full"></div>
                     <form onSubmit={handleSubmit}>
-                        <div className="form-control">
+                        <div className="form-control mb-4">
                             <label className="label">Trip Name:</label>
                             <input type="text" className="input input-m w-full" value={name} onChange={(e) => setName(e.target.value)} required />
                         </div>
 
-                        <div className="flex gap-3">
-                            <div className="form-control w-full">
-                                <label className="label">Start Date:</label>
-                                <input type="date" className="input input-m w-full" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
-                            </div>
-                            <div className="form-control w-full">
-                                <label className="label">End Date:</label>
-                                <input type="date" className="input input-m w-full" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
-                            </div>
+                        <div className="join">
+                            <input type="date" className="input input-m w-full join-item" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
+                            <input type="date" className="input input-m w-full join-item" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
                         </div>
                         <div className="form-control">
                             <label className="label">Where?:</label>
