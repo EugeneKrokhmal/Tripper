@@ -1,10 +1,11 @@
+// actions.js
+
 import axios from 'axios';
 
 // Action types
 export const SET_AUTH_TOKEN = 'SET_AUTH_TOKEN';
 export const SET_USER_ID = 'SET_USER_ID';
 export const LOGOUT = 'LOGOUT';
-export const SET_TRIPS = 'SET_TRIPS';
 
 // Action creators
 export const setAuthToken = (token) => ({
@@ -21,56 +22,73 @@ export const logout = () => ({
     type: LOGOUT,
 });
 
-export const setTrips = (trips) => ({
-    type: SET_TRIPS,
-    payload: trips,
-});
-
 // Thunk action creator to handle login
-export const login = (token) => {
+export const login = (email, password) => {
     return async (dispatch) => {
-        dispatch(setAuthToken(token));
         try {
-            const userId = await fetchUserId(token); // Fetch userId here
-            dispatch(setUserId(userId));
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, {
+                email,
+                password
+            });
+            const token = response.data.token;
             localStorage.setItem('token', token);
+            dispatch(setAuthToken(token));
+            await dispatch(fetchUserId(token));
         } catch (error) {
-            console.error('Error fetching userId:', error);
-            dispatch(logout()); // Log out if userId fetch fails
+            console.error('Login error:', error);
+            // Handle login failure
         }
     };
 };
 
-// Async function to fetch userId
-export const fetchUserId = async (token) => {
-    try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/auth/user`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        return response.data.userId;
-    } catch (error) {
-        console.error('Error fetching userId:', error);
-        throw error;
-    }
-};
-
-// Thunk action creator to fetch trips
-export const fetchTrips = () => {
-    return async (dispatch, getState) => {
-        const { auth } = getState(); // Get auth state from Redux store
-        const token = auth.authToken; // Get token from auth state
-
+// Thunk action creator to handle registration
+export const register = (email, password, confirmPassword) => {
+    return async (dispatch) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/trips`, {
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/auth/register`, {
+                email,
+                password,
+                confirmPassword
+            });
+            const token = response.data.token;
+            localStorage.setItem('token', token);
+            dispatch(setAuthToken(token));
+            await dispatch(fetchUserId(token));
+        } catch (error) {
+            console.error('Registration error:', error);
+            // Handle registration failure
+            throw error; // Optional: Propagate the error to the component for additional handling
+        }
+    };
+};
+// Async function to fetch userId
+export const fetchUserId = (token) => {
+    return async (dispatch) => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/auth/users/`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            dispatch(setTrips(response.data)); // Dispatch setTrips action to update trips state in Redux
+            const userId = response.data._id; // Assuming response.data has the user object directly
+            dispatch(setUserId(userId));
         } catch (error) {
-            console.error('Error fetching trips:', error);
+            console.error('Error fetching userId:', error);
+            // Handle error
+        }
+    };
+};
+
+
+// Thunk action creator to handle logout
+export const logoutUser = () => {
+    return async (dispatch) => {
+        try {
+            localStorage.removeItem('token');
+            dispatch(logout());
+        } catch (error) {
+            console.error('Logout error:', error);
+            // Handle logout error
         }
     };
 };

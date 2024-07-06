@@ -1,8 +1,12 @@
+// Login.js
+
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/actions';
 import WelcomeMessage from './WelcomeMessage';
 
-const Login = ({ setIsAuthenticated }) => {
+const Login = () => {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -12,13 +16,8 @@ const Login = ({ setIsAuthenticated }) => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, {
-                email,
-                password
-            });
-            const token = response.data.token;
-            localStorage.setItem('token', token);
-            setIsAuthenticated(true);
+            await dispatch(login(email, password));
+            window.location.href = '/';
         } catch (error) {
             console.error('Login error:', error);
             setError('Invalid credentials. Please try again.');
@@ -55,7 +54,7 @@ const Login = ({ setIsAuthenticated }) => {
                                             <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="" />
                                         </div>
                                         <div className="ml-3 text-sm">
-                                            <label  className="text-gray-500 dark:text-gray-300">Remember me</label>
+                                            <label className="text-gray-500 dark:text-gray-300">Remember me</label>
                                         </div>
                                     </div>
                                     <a href="/forgotpassword" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>

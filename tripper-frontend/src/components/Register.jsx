@@ -1,10 +1,12 @@
-// components/Register.js
+// Register.js
 
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { register } from '../redux/actions';
 import WelcomeMessage from './WelcomeMessage';
 
-const Register = ({ setIsAuthenticated }) => {
+const Register = () => {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -15,14 +17,8 @@ const Register = ({ setIsAuthenticated }) => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/auth/register`, {
-                email,
-                password,
-                confirmPassword
-            });
-            const token = response.data.token;
-            localStorage.setItem('token', token);
-            setIsAuthenticated(true);
+            await dispatch(register(email, password, confirmPassword));
+            window.location.href = '/';
         } catch (error) {
             console.error('Registration error:', error);
             setError('Registration failed. Please try again.');
